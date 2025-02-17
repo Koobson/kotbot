@@ -7,13 +7,17 @@ import (
 	"syscall"
 
 	"github.com/Koobson/kotbot/app"
+	"github.com/Koobson/kotbot/storage"
 	"github.com/Koobson/kotbot/utils"
 )
 
 func main() {
 	cfg := utils.MustLoadConfig()
 
-	botApp := app.New(cfg.BotToken)
+	storage := storage.New(cfg.DBPath + "/db.sqlite")
+	defer storage.Close()
+
+	botApp := app.New(cfg.BotToken, storage)
 
 	_ = botApp
 

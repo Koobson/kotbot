@@ -4,6 +4,7 @@ import "github.com/caarlos0/env/v11"
 
 type Config struct {
 	BotToken string `env:"BOT_TOKEN,required,notEmpty"`
+	DBPath   string `env:"DB_PATH,required,notEmpty"`
 }
 
 func MustLoadConfig() Config {

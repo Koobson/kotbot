@@ -1,21 +1,23 @@
 package app
 
 import (
+	"github.com/Koobson/kotbot/storage"
 	"github.com/bwmarrin/discordgo"
 )
 
 type App struct {
 	dg *discordgo.Session
+	s  *storage.Storage
 }
 
-func New(botToken string) *App {
+func New(botToken string, storage *storage.Storage) *App {
 	dg, err := discordgo.New("Bot " + botToken)
 	if err != nil {
 		panic(err)
 	}
 	dg.Identify.Intents = discordgo.IntentsAll
 
-	a := App{dg: dg}
+	a := App{dg: dg, s: storage}
 	a.registerHandlers()
 
 	return &a
