@@ -22,7 +22,9 @@ func New(botToken string) *App {
 }
 
 func (a *App) registerHandlers() {
+	a.dg.AddHandler(a.handleGuildCreate)
 	a.dg.AddHandler(a.handleMessageCreatePingPong)
+	a.dg.AddHandler(a.handleCommands)
 }
 
 func (a *App) Start() {
