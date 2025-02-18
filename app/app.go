@@ -25,7 +25,7 @@ func New(botToken string, storage *storage.Storage) *App {
 
 func (a *App) registerHandlers() {
 	a.dg.AddHandler(a.handleGuildCreate)
-	a.dg.AddHandler(a.handleMessageCreatePingPong)
+	a.dg.AddHandler(a.handleMessageCreateInactiveHumans)
 	a.dg.AddHandler(a.handleCommands)
 }
 

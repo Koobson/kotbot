@@ -11,3 +11,9 @@ func (a *App) handleCommands(s *discordgo.Session, i *discordgo.InteractionCreat
 	}
 	handler(s, i)
 }
+
+func (a *App) InteractionRespond(s *discordgo.Session, i *discordgo.InteractionCreate, message string) {
+	s.InteractionRespond(i.Interaction,
+		&discordgo.InteractionResponse{Type: discordgo.InteractionResponseChannelMessageWithSource,
+			Data: &discordgo.InteractionResponseData{Content: message}})
+}

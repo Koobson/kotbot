@@ -26,14 +26,5 @@ func (s *Storage) Close() {
 }
 
 func (s *Storage) init() {
-	_, err := s.db.Exec(`
-			CREATE TABLE IF NOT EXISTS counts (
-			guild_id TEXT NOT NULL,
-			user_id TEXT NOT NULL,
-			counter INTEGER,
-			PRIMARY KEY (guild_id, user_id)
-			);`)
-	if err != nil {
-		panic(err)
-	}
+	s.initInactiveHumans()
 }
