@@ -1,0 +1,7 @@
+temp
+.vscode
+.env
+.gitignore
+README.md
+.git
+staticcheck.conf
