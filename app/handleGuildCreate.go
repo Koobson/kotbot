@@ -17,7 +17,7 @@ func (a *App) handleGuildCreate(s *discordgo.Session, g *discordgo.GuildCreate) 
 		}
 	}
 
-	for _, command := range commands {
+	for _, command := range a.cm.GetCommands() {
 		_, err := a.dg.ApplicationCommandCreate(s.State.User.ID, g.ID, &command)
 		if err != nil {
 			panic(err)

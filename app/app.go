@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/Koobson/kotbot/app/commands"
 	"github.com/Koobson/kotbot/storage"
 	"github.com/bwmarrin/discordgo"
 )
@@ -8,6 +9,7 @@ import (
 type App struct {
 	dg *discordgo.Session
 	s  *storage.Storage
+	cm *commands.CommandManager
 }
 
 func New(botToken string, storage *storage.Storage) *App {
@@ -25,7 +27,7 @@ func New(botToken string, storage *storage.Storage) *App {
 
 func (a *App) registerHandlers() {
 	a.dg.AddHandler(a.handleGuildCreate)
-	a.dg.AddHandler(a.handleMessageCreateInactiveHumans)
+	a.dg.AddHandler(a.handleMessageCreateActivityRecord)
 	a.dg.AddHandler(a.handleCommands)
 }
 

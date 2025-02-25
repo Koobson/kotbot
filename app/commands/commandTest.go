@@ -1,8 +1,10 @@
-package app
+package commands
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"github.com/bwmarrin/discordgo"
+)
 
-func (a *App) commandTest(s *discordgo.Session, i *discordgo.InteractionCreate) {
+func (cm *CommandManager) commandTest(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	s.InteractionRespond(i.Interaction,
 		&discordgo.InteractionResponse{Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionResponseData{Content: "Tost!"}})

@@ -11,7 +11,7 @@ type activeHumansRow struct {
 	Timestamp string `db:"timestamp"`
 }
 
-func (s *Storage) initInactiveHumans() {
+func (s *Storage) initHuman() {
 	_, err := s.db.Exec(`
 			CREATE TABLE IF NOT EXISTS message_timestamps (
 			guild_id TEXT NOT NULL,
@@ -24,7 +24,7 @@ func (s *Storage) initInactiveHumans() {
 	}
 
 	_, err = s.db.Exec(`
-			CREATE TABLE IF NOT EXISTS human_roles (
+			CREATE TABLE IF NOT EXISTS human_role (
 			guild_id TEXT NOT NULL,
 			role_id TEXT NOT NULL,
 			PRIMARY KEY (guild_id)
@@ -35,14 +35,14 @@ func (s *Storage) initInactiveHumans() {
 }
 
 func (s *Storage) SetHumanRoleID(guildID string, humanRoleID string) error {
-	_, err := s.db.Exec(`INSERT INTO human_roles(guild_id, role_id) VALUES($1,$2)
+	_, err := s.db.Exec(`INSERT INTO human_role(guild_id, role_id) VALUES($1,$2)
   						 ON CONFLICT(guild_id) DO UPDATE SET role_id=excluded.role_id`, guildID, humanRoleID)
 	return err
 }
 
 func (s *Storage) GetHumanRoleID(guildID string) (string, error) {
 	humanRoleID := ""
-	err := s.db.Get(&humanRoleID, "SELECT role_id FROM human_roles WHERE guild_id=$1", guildID)
+	err := s.db.Get(&humanRoleID, "SELECT role_id FROM human_role WHERE guild_id=$1", guildID)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -82,7 +82,7 @@ func (s *Storage) GetActiveHumans(guildID string, cutoffDate time.Time, cutoffMe
 	return activeHumans, nil
 }
 
-func (s *Storage) AddInactiveHumansRecord(guildID string, userID string) error {
+func (s *Storage) AddHumansActivityTimestampRecord(guildID string, userID string) error {
 	_, err := s.db.Exec("INSERT INTO message_timestamps VALUES ($1, $2, $3)", guildID, userID, time.Now().Format(time.RFC3339Nano))
 	if err != nil {
 		return err
