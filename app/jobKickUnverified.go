@@ -38,6 +38,11 @@ func (a *App) kickUnverified() {
 			continue
 		}
 
+		if unverifiedRoleID == "" {
+			fmt.Println(guild.ID + " doesn't have it's unverified role setup")
+			continue
+		}
+
 		guildMembers, err := a.dg.GuildMembers(guild.ID, "", 1000) //Rebuild if guild has >1000 members
 		if err != nil {
 			//TODO logging
