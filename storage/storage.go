@@ -26,5 +26,6 @@ func (s *Storage) Close() {
 }
 
 func (s *Storage) init() {
-	s.initInactiveHumans()
+	s.initHuman()
+	s.initAdmin()
 }
