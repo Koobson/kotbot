@@ -6,7 +6,7 @@ import (
 )
 
 func (cm *CommandManager) commandSetHumanRole(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	adminRoleID, err := cm.s.GetAdminRoleID(i.GuildID) //Segfault tutaj
+	adminRoleID, err := cm.s.GetAdminRoleID(i.GuildID) //Segfault here
 	if err != nil {
 		cm.InteractionRespond(s, i, err.Error())
 		return
