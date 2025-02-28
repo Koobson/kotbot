@@ -18,7 +18,7 @@ func (cm *CommandManager) commandSetAdminRole(s *discordgo.Session, i *discordgo
 
 	options := i.ApplicationCommandData().Options
 	if len(options) == 0 {
-		cm.InteractionRespond(s, i, "Recieved no options in set_admin_role command")
+		cm.InteractionRespond(s, i, "Received no options in set_admin_role command")
 		return
 	}
 

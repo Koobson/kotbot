@@ -18,8 +18,9 @@ func New(botToken string, storage *storage.Storage) *App {
 		panic(err)
 	}
 	dg.Identify.Intents = discordgo.IntentsAll
+	cm := commands.New(dg, storage)
 
-	a := App{dg: dg, s: storage}
+	a := App{dg: dg, s: storage, cm: cm}
 	a.registerHandlers()
 
 	return &a
@@ -36,6 +37,7 @@ func (a *App) Start() {
 	if err != nil {
 		panic(err)
 	}
+	a.startJobKickUnverified()
 }
 
 func (a *App) Stop() {

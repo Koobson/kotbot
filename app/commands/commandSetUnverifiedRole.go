@@ -5,7 +5,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func (cm *CommandManager) commandSetHumanRole(s *discordgo.Session, i *discordgo.InteractionCreate) {
+func (cm *CommandManager) commandSetUnverifiedRole(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	adminRoleID, err := cm.s.GetAdminRoleID(i.GuildID)
 	if err != nil {
 		cm.InteractionRespond(s, i, err.Error())
@@ -25,11 +25,11 @@ func (cm *CommandManager) commandSetHumanRole(s *discordgo.Session, i *discordgo
 
 	options := i.ApplicationCommandData().Options
 	if len(options) == 0 {
-		cm.InteractionRespond(s, i, "Received no options in set_human_role command")
+		cm.InteractionRespond(s, i, "Received no options in set_unverified_role command")
 		return
 	}
 
-	humanRole := options[0].RoleValue(s, i.GuildID)
-	cm.s.SetHumanRoleID(i.GuildID, humanRole.ID)
-	cm.InteractionRespond(s, i, humanRole.Mention()+" is now a human role")
+	unverifiedRole := options[0].RoleValue(s, i.GuildID)
+	cm.s.SetUnverifiedRoleID(i.GuildID, unverifiedRole.ID)
+	cm.InteractionRespond(s, i, unverifiedRole.Mention()+" is now an unverified role")
 }
