@@ -37,6 +37,7 @@ func (a *App) Start() {
 	if err != nil {
 		panic(err)
 	}
+	a.startJobKickUnverified()
 }
 
 func (a *App) Stop() {
