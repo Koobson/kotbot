@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/Koobson/kotbot/utils/logger"
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -9,5 +10,9 @@ func (a *App) handleMessageCreateActivityRecord(s *discordgo.Session, m *discord
 		return
 	}
 
-	a.s.AddHumansActivityTimestampRecord(m.GuildID, m.Author.ID)
+	err := a.s.AddHumansActivityTimestampRecord(m.GuildID, m.Author.ID)
+	if err != nil {
+		logger.Log("handleMessageCreateActivityRecord()->a.s.AddHumansActivityTimestampRecord(m.GuildID, m.Author.ID)",
+			err, logger.GuildID(m.GuildID), logger.UserID(m.Author.ID))
+	}
 }

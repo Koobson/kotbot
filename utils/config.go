@@ -1,6 +1,8 @@
 package utils
 
-import "github.com/caarlos0/env/v11"
+import (
+	"github.com/caarlos0/env/v11"
+)
 
 type Config struct {
 	BotToken string `env:"BOT_TOKEN,required,notEmpty"`

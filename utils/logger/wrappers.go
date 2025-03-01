@@ -5,11 +5,7 @@ import (
 	"log/slog"
 )
 
-func Err(err error) slog.Attr {
-	return slog.String(KeyError, err.Error())
-}
-
-func LogCommand(commandName string, err error, guildID string, userID string, attrs ...slog.Attr) {
+func LogCommand(message string, err error, guildID string, userID string, attrs ...slog.Attr) {
 	logAttrs := []any{}
 	level := slog.LevelInfo
 	if err != nil {
@@ -17,10 +13,25 @@ func LogCommand(commandName string, err error, guildID string, userID string, at
 		logAttrs = append(logAttrs, Err(err))
 	}
 
-	logAttrs = append(logAttrs, slog.String(GuildID, guildID), slog.String(UserID, userID))
+	logAttrs = append(logAttrs, GuildID(guildID), UserID(userID))
 	for attr := range attrs {
 		logAttrs = append(logAttrs, attr)
 	}
 
-	slog.Log(context.Background(), level, commandName, logAttrs...)
+	slog.Log(context.Background(), level, message, logAttrs...)
+}
+
+func Log(message string, err error, attrs ...slog.Attr) {
+	logAttrs := []any{}
+	level := slog.LevelInfo
+	if err != nil {
+		level = slog.LevelError
+		logAttrs = append(logAttrs, Err(err))
+	}
+
+	for attr := range attrs {
+		logAttrs = append(logAttrs, attr)
+	}
+
+	slog.Log(context.Background(), level, message, logAttrs...)
 }

@@ -55,7 +55,7 @@ func (cm *CommandManager) commandInactiveHumans(s *discordgo.Session, i *discord
 		return
 	}
 	if humanRoleID == "" {
-		cm.InteractionRespond(s, i, utils.ErrorHumanRoleNotSer)
+		cm.InteractionRespond(s, i, utils.ErrorHumanRoleNotSet)
 		logger.LogCommand("commandInactiveHumans()->humanRoleID == \"\"", nil, i.GuildID, i.Member.User.ID)
 		return
 	}
