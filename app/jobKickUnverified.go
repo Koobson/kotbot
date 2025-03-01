@@ -30,7 +30,6 @@ func (a *App) kickUnverified() {
 	}
 
 	for _, guild := range guilds {
-		fmt.Println(guild.Name)
 		unverifiedRoleID, err := a.s.GetUnverifiedRoleID(guild.ID)
 		if err != nil {
 			//TODO logging
