@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"os/signal"
 	"syscall"
@@ -9,10 +10,16 @@ import (
 	"github.com/Koobson/kotbot/app"
 	"github.com/Koobson/kotbot/storage"
 	"github.com/Koobson/kotbot/utils"
+	"github.com/Koobson/kotbot/utils/logger"
 )
+
+//TODO robić folder na logi jak go nie ma
+//TODO robić folder na db jak go nie ma
 
 func main() {
 	cfg := utils.MustLoadConfig()
+	slog.SetDefault(slog.New(logger.New(slog.LevelInfo, cfg.LogPath)))
+	slog.Info("App Start")
 
 	storage := storage.New(cfg.DBPath + "/db.sqlite")
 	defer storage.Close()

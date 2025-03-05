@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/Koobson/kotbot/app/commands"
 	"github.com/Koobson/kotbot/storage"
+	"github.com/Koobson/kotbot/utils/logger"
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -15,6 +16,7 @@ type App struct {
 func New(botToken string, storage *storage.Storage) *App {
 	dg, err := discordgo.New("Bot " + botToken)
 	if err != nil {
+		logger.Log("App New()", err)
 		panic(err)
 	}
 	dg.Identify.Intents = discordgo.IntentsAll
@@ -35,6 +37,7 @@ func (a *App) registerHandlers() {
 func (a *App) Start() {
 	err := a.dg.Open()
 	if err != nil {
+		logger.Log("Start()->a.dg.Open()", err)
 		panic(err)
 	}
 	a.startJobKickUnverified()
@@ -42,4 +45,5 @@ func (a *App) Start() {
 
 func (a *App) Stop() {
 	a.dg.Close()
+	logger.Log("Stop()", nil)
 }
