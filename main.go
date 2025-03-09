@@ -19,7 +19,7 @@ import (
 func main() {
 	cfg := utils.MustLoadConfig()
 	slog.SetDefault(slog.New(logger.New(slog.LevelInfo, cfg.LogPath)))
-	slog.Info("App Start")
+	slog.Info("App Start", logger.BotVersion(cfg.CommitHash))
 
 	storage := storage.New(cfg.DBPath + "/db.sqlite")
 	defer storage.Close()

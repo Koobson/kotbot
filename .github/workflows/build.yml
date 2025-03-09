@@ -6,3 +6,10 @@ jobs:
   build:
     name: build docker container
     runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: get hash
+        run: SHORT_SHA=$(git rev-parse --short "$GITHUB_SHA")
+      - name: build container
+        run: docker build --tag Koobson/kotbot:$SHORT_SHA --tag Koobson/kotbot:latest --build-arg COMMIT_HASH=$SHORT_SHA .
