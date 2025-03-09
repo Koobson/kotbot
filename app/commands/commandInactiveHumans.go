@@ -60,11 +60,12 @@ func (cm *CommandManager) commandInactiveHumans(s *discordgo.Session, i *discord
 		return
 	}
 
+	everyoneRole := utils.GetEveryoneRole(*g)
 	for _, member := range guildMembers {
 		if member.User.Bot {
 			continue
 		}
-		if !slices.Contains(member.Roles, humanRoleID) {
+		if !slices.Contains(member.Roles, humanRoleID) && humanRoleID != everyoneRole.ID {
 			continue
 		}
 		if slices.ContainsFunc(activeHumans, func(activeHuman string) bool {
@@ -75,6 +76,9 @@ func (cm *CommandManager) commandInactiveHumans(s *discordgo.Session, i *discord
 		inactiveHumansBuilder.WriteString(member.User.Username + "\n")
 	}
 
+	if inactiveHumansBuilder.Len() == 0 {
+		inactiveHumansBuilder.WriteString("Wszyscy są aktywni")
+	}
 	cm.InteractionRespond(s, i, inactiveHumansBuilder.String())
 	logger.LogCommand("commandInactiveHumans()", nil, i.GuildID, i.Member.User.ID)
 }
