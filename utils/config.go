@@ -5,9 +5,10 @@ import (
 )
 
 type Config struct {
-	BotToken string `env:"BOT_TOKEN,required,notEmpty"`
-	DBPath   string `env:"DB_PATH,required,notEmpty"`
-	LogPath  string `env:"LOG_PATH,required,notEmpty"`
+	CommitHash string `env:"COMMIT_HASH,required,notEmpty"`
+	BotToken   string `env:"BOT_TOKEN,required,notEmpty"`
+	DBPath     string `env:"DB_PATH,required,notEmpty"`
+	LogPath    string `env:"LOG_PATH,required,notEmpty"`
 }
 
 func MustLoadConfig() Config {

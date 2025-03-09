@@ -4,6 +4,7 @@ import "log/slog"
 
 const (
 	KeyError           = "error"
+	KeyBotVersion      = "version"
 	KeyGuildID         = "guildID"
 	KeyUserID          = "userID"
 	KeyKickedUserCount = "kickedUserCount"
@@ -12,6 +13,10 @@ const (
 
 func Err(err error) slog.Attr {
 	return slog.String(KeyError, err.Error())
+}
+
+func BotVersion(version string) slog.Attr {
+	return slog.String(KeyBotVersion, version)
 }
 
 func GuildID(guildID string) slog.Attr {

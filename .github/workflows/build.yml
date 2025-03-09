@@ -1,8 +1,18 @@
 name: build
 
-on: push
+on: 
+  push:
+    branches:
+      - '*'
+      - '!master'
 
 jobs:
   build:
-    name: build docker container
+    name: build docker image
     runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: build image
+        run: |
+          docker build .
