@@ -15,5 +15,5 @@ jobs:
           docker build --tag Koobson/kotbot:$SHORT_SHA --tag Koobson/kotbot:latest --build-arg COMMIT_HASH=$SHORT_SHA .
       - name: push image
         run: |
-          echo $DOCKER_PASSWORD | docker login --username Koobson --password-stdin 
+          echo ${{ env.DOCKER_PASSWORD }} | docker login --username Koobson --password-stdin 
           docker push -a Koobson/kotbot
