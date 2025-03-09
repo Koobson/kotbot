@@ -1,6 +1,10 @@
 name: build
 
-on: push
+on: 
+  push:
+    branches:
+      - '*'
+      - '!master'
 
 jobs:
   build:
@@ -11,9 +15,4 @@ jobs:
         uses: actions/checkout@v4
       - name: build image
         run: |
-          SHORT_SHA=$(git rev-parse --short "$GITHUB_SHA")
-          docker build --tag koobson/kotbot:$SHORT_SHA --tag koobson/kotbot:latest --build-arg COMMIT_HASH=$SHORT_SHA .
-      - name: push image
-        run: |
-          echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username koobson --password-stdin 
-          docker push -a koobson/kotbot
+          docker build .
