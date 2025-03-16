@@ -21,7 +21,7 @@ func main() {
 	storage := storage.New(cfg.DBPath + "/db.sqlite")
 	defer storage.Close()
 
-	botApp := app.New(cfg.BotToken, storage)
+	botApp := app.New(cfg.BotToken, storage, cfg.CommitHash)
 
 	_ = botApp
 

@@ -13,14 +13,14 @@ type App struct {
 	cm *commands.CommandManager
 }
 
-func New(botToken string, storage *storage.Storage) *App {
+func New(botToken string, storage *storage.Storage, botVersion string) *App {
 	dg, err := discordgo.New("Bot " + botToken)
 	if err != nil {
 		logger.Log("App New()", err)
 		panic(err)
 	}
 	dg.Identify.Intents = discordgo.IntentsAll
-	cm := commands.New(dg, storage)
+	cm := commands.New(dg, storage, botVersion)
 
 	a := App{dg: dg, s: storage, cm: cm}
 	a.registerHandlers()

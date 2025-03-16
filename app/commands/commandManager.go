@@ -6,12 +6,13 @@ import (
 )
 
 type CommandManager struct {
-	dg *discordgo.Session
-	s  *storage.Storage
+	dg      *discordgo.Session
+	s       *storage.Storage
+	version string
 }
 
-func New(dg *discordgo.Session, storage *storage.Storage) *CommandManager {
-	cm := CommandManager{dg: dg, s: storage}
+func New(dg *discordgo.Session, storage *storage.Storage, version string) *CommandManager {
+	cm := CommandManager{dg: dg, s: storage, version: version}
 	return &cm
 }
 

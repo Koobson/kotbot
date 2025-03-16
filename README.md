@@ -4,6 +4,8 @@ Discord bot to manage inactive and unverified members of Warrior Cats RP server
 
 ## Commands
 
+- `/help` Displays all commands.
+- `/version` Displays bot version.
 - `/get_inactive_humans` Gives a list of people with a `Human` role that have been inactive for a week.
 - `/set_human_role` Sets the `Human` role.
 - `/set_admin_role` Sets the `Admin` role that grants access to other commands. This command can only be used by the server owner.
