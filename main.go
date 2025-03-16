@@ -13,9 +13,6 @@ import (
 	"github.com/Koobson/kotbot/utils/logger"
 )
 
-//TODO robić folder na logi jak go nie ma
-//TODO robić folder na db jak go nie ma
-
 func main() {
 	cfg := utils.MustLoadConfig()
 	slog.SetDefault(slog.New(logger.New(slog.LevelInfo, cfg.LogPath)))
