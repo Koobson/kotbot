@@ -8,11 +8,8 @@ import (
 	"github.com/Koobson/kotbot/utils/logger"
 )
 
-// const inactivityKickAfterTime = time.Hour * 24 * 7	//User will be kicked if they have been on the server for longer than this amount of time
-// const jobInterval = time.Hour
-
-const inactivityKickAfterTime = time.Second
-const jobInterval = time.Second * 10
+const inactivityKickAfterTime = time.Hour * 24 * 7 //User will be kicked if they have been on the server for longer than this amount of time and still have the "unverified" role
+const jobInterval = time.Hour
 
 func (a *App) startJobKickUnverified() {
 	go func() {

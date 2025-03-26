@@ -14,6 +14,7 @@ var commands map[string]discordgo.ApplicationCommand = map[string]discordgo.Appl
 		{Type: discordgo.ApplicationCommandOptionRole, Name: "unverified_role", Description: "unverified role", Required: true}}},
 	"help":    {Name: "help", Description: "displays available commands"},
 	"version": {Name: "version", Description: "displays bot version"},
+	"stats":   {Name: "stats", Description: "displays statistics"},
 }
 
 func (cm *CommandManager) GetCommandHandlers() map[string]commandHandler {
@@ -24,5 +25,6 @@ func (cm *CommandManager) GetCommandHandlers() map[string]commandHandler {
 		"set_unverified_role": cm.commandSetUnverifiedRole,
 		"help":                cm.commandHelp,
 		"version":             cm.commandVersion,
+		"stats":               cm.commandStats,
 	}
 }

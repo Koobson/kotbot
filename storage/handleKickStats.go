@@ -2,7 +2,6 @@ package storage
 
 import (
 	"database/sql"
-	"strconv"
 	"time"
 )
 
@@ -25,17 +24,13 @@ func (s *Storage) AddKickedUser(guildID string, userID string) error {
 }
 
 func (s *Storage) GetKickedUsersCount(guildID string) (int, error) {
-	kickedUsersCountString := ""
-	err := s.db.Get(&kickedUsersCountString, "SELECT COUNT(*) FROM kick_stats WHERE guild_id=$1", guildID)
+	var kickedUsersCount int
+	err := s.db.Get(&kickedUsersCount, "SELECT COUNT(*) FROM kick_stats WHERE guild_id=$1", guildID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return -1, nil
 		}
 		return -1, err
-	}
-	kickedUsersCount, err := strconv.Atoi(kickedUsersCountString)
-	if err != nil {
-		return -1, nil
 	}
 	return kickedUsersCount, nil
 }
