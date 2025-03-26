@@ -31,4 +31,5 @@ func (s *Storage) init() {
 	s.initHuman()
 	s.initAdmin()
 	s.initUnverified()
+	s.initKickStats()
 }

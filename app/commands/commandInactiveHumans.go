@@ -47,7 +47,7 @@ func (cm *CommandManager) commandInactiveHumans(s *discordgo.Session, i *discord
 		return
 	}
 
-	inactiveHumansBuilder := strings.Builder{}
+	inactiveHumansList := []*discordgo.Member{}
 	humanRoleID, err := cm.s.GetHumanRoleID(i.GuildID)
 	if err != nil {
 		cm.InteractionRespond(s, i, utils.ErrorInternal)
@@ -73,12 +73,19 @@ func (cm *CommandManager) commandInactiveHumans(s *discordgo.Session, i *discord
 		}) {
 			continue
 		}
-		inactiveHumansBuilder.WriteString(member.User.Username + "\n")
+		inactiveHumansList = append(inactiveHumansList, member)
 	}
+	inactiveHumansBuilder := strings.Builder{}
 
-	if inactiveHumansBuilder.Len() == 0 {
+	if len(inactiveHumansList) == 0 {
 		inactiveHumansBuilder.WriteString("Wszyscy są aktywni")
 	}
+
+	for _, human := range inactiveHumansList {
+		inactiveHumansBuilder.WriteString(human.Mention())
+		inactiveHumansBuilder.WriteString("\n")
+	}
+
 	cm.InteractionRespond(s, i, inactiveHumansBuilder.String())
 	logger.LogCommand("commandInactiveHumans()", nil, i.GuildID, i.Member.User.ID)
 }

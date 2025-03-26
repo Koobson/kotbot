@@ -10,6 +10,7 @@ Discord bot to manage inactive and unverified members of Warrior Cats RP server
 - `/set_human_role` Sets the `Human` role.
 - `/set_admin_role` Sets the `Admin` role that grants access to other commands. This command can only be used by the server owner.
 - `/set_unverified_role` Sets the `Unverified` role. People with this role will be automatically kicked after a week.
+- `/stats` Displays some statistics collected during the bot's lifetime.
 
 ## Hosting
 
