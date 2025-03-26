@@ -8,8 +8,11 @@ import (
 	"github.com/Koobson/kotbot/utils/logger"
 )
 
-const inactivityKickAfterTime = time.Hour * 24 * 7
-const jobInterval = time.Hour
+// const inactivityKickAfterTime = time.Hour * 24 * 7	//User will be kicked if they have been on the server for longer than this amount of time
+// const jobInterval = time.Hour
+
+const inactivityKickAfterTime = time.Second
+const jobInterval = time.Second * 10
 
 func (a *App) startJobKickUnverified() {
 	go func() {
@@ -63,6 +66,11 @@ func (a *App) kickUnverified() {
 			err = a.dg.GuildMemberDeleteWithReason(guild.ID, member.User.ID, "Wyrzucono za brak weryfikacji")
 			if err != nil {
 				logger.Log("kickUnverified()->a.dg.GuildMemberDeleteWithReason(guild.ID, member.User.ID, \"Wyrzucono za brak weryfikacji\")", err, logger.GuildID(guild.ID), logger.UserID(member.User.ID))
+				continue
+			}
+			err = a.s.AddKickedUser(guild.ID, member.User.ID)
+			if err != nil {
+				logger.Log("kickUnverified()->a.s.AddKickedUser(guild.ID, member.User.ID)", err, logger.GuildID(guild.ID), logger.UserID(member.User.ID))
 				continue
 			}
 			kickedUserCounter++
