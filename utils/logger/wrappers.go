@@ -14,7 +14,7 @@ func LogCommand(message string, err error, guildID string, userID string, attrs 
 	}
 
 	logAttrs = append(logAttrs, GuildID(guildID), UserID(userID))
-	for attr := range attrs {
+	for _, attr := range attrs {
 		logAttrs = append(logAttrs, attr)
 	}
 
@@ -29,7 +29,7 @@ func Log(message string, err error, attrs ...slog.Attr) {
 		logAttrs = append(logAttrs, Err(err))
 	}
 
-	for attr := range attrs {
+	for _, attr := range attrs {
 		logAttrs = append(logAttrs, attr)
 	}
 
