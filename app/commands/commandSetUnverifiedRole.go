@@ -9,13 +9,6 @@ import (
 )
 
 func (cm *CommandManager) commandSetUnverifiedRole(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	adminRoleID, err := cm.s.GetAdminRoleID(i.GuildID)
-	if err != nil {
-		cm.InteractionRespond(s, i, utils.ErrorInternal)
-		logger.LogCommand("commandSetUnverifiedRole()->cm.s.GetAdminRoleID(i.GuildID)", err, i.GuildID, i.Member.User.ID)
-		return
-	}
-
 	g, err := s.Guild(i.GuildID)
 	if err != nil {
 		cm.InteractionRespond(s, i, utils.ErrorInternal)
@@ -23,9 +16,9 @@ func (cm *CommandManager) commandSetUnverifiedRole(s *discordgo.Session, i *disc
 		return
 	}
 
-	if !utils.IsAdmin(g, i.Member, adminRoleID) {
+	if i.Member.User.ID != g.OwnerID {
 		cm.InteractionRespond(s, i, utils.ErrorNoPermissions)
-		logger.LogCommand("commandSetUnverifiedRole()->!utils.IsAdmin(g, i.Member, adminRoleID)", nil, i.GuildID, i.Member.User.ID)
+		logger.LogCommand("commandSetUnverifiedRole()->i.Member.User.ID != g.OwnerID", err, i.GuildID, i.Member.User.ID)
 		return
 	}
 
@@ -39,5 +32,6 @@ func (cm *CommandManager) commandSetUnverifiedRole(s *discordgo.Session, i *disc
 
 	unverifiedRole := options[0].RoleValue(s, i.GuildID)
 	cm.s.SetUnverifiedRoleID(i.GuildID, unverifiedRole.ID)
-	cm.InteractionRespond(s, i, unverifiedRole.Mention()+" is now an unverified role")
+	cm.InteractionRespond(s, i, unverifiedRole.Mention()+" są uznawani za niezweryfikowanych")
+	logger.LogCommand("commandSetUnverifiedRole()", nil, i.GuildID, i.Member.User.ID)
 }

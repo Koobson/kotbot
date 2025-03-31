@@ -9,6 +9,26 @@ import (
 )
 
 func (cm *CommandManager) commandStats(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	adminRoleID, err := cm.s.GetAdminRoleID(i.GuildID)
+	if err != nil {
+		cm.InteractionRespond(s, i, utils.ErrorInternal)
+		logger.LogCommand("commandStats()->cm.s.GetAdminRoleID(i.GuildID)", err, i.GuildID, i.Member.User.ID)
+		return
+	}
+
+	g, err := s.Guild(i.GuildID)
+	if err != nil {
+		cm.InteractionRespond(s, i, utils.ErrorInternal)
+		logger.LogCommand("commandStats()->s.Guild(i.GuildID)", err, i.GuildID, i.Member.User.ID)
+		return
+	}
+
+	if !utils.IsAdmin(g, i.Member, adminRoleID) {
+		cm.InteractionRespond(s, i, utils.ErrorNoPermissions)
+		logger.LogCommand("commandStats()->!utils.IsAdmin(g, i.Member, adminRoleID)", nil, i.GuildID, i.Member.User.ID)
+		return
+	}
+
 	unverifiedUsersCount, err := cm.s.GetKickedUsersCount(i.GuildID)
 	if err != nil {
 		cm.InteractionRespond(s, i, utils.ErrorInternal)

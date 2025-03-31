@@ -9,13 +9,6 @@ import (
 )
 
 func (cm *CommandManager) commandSetHumanRole(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	adminRoleID, err := cm.s.GetAdminRoleID(i.GuildID)
-	if err != nil {
-		cm.InteractionRespond(s, i, utils.ErrorInternal)
-		logger.LogCommand("commandSetHumanRole()->cm.s.GetAdminRoleID(i.GuildID)", err, i.GuildID, i.Member.User.ID)
-		return
-	}
-
 	g, err := s.Guild(i.GuildID)
 	if err != nil {
 		cm.InteractionRespond(s, i, utils.ErrorInternal)
@@ -23,9 +16,9 @@ func (cm *CommandManager) commandSetHumanRole(s *discordgo.Session, i *discordgo
 		return
 	}
 
-	if !utils.IsAdmin(g, i.Member, adminRoleID) {
+	if i.Member.User.ID != g.OwnerID {
 		cm.InteractionRespond(s, i, utils.ErrorNoPermissions)
-		logger.LogCommand("commandSetHumanRole()->!utils.IsAdmin(g, i.Member, adminRoleID)", err, i.GuildID, i.Member.User.ID)
+		logger.LogCommand("commandSetHuman()->i.Member.User.ID != g.OwnerID", err, i.GuildID, i.Member.User.ID)
 		return
 	}
 
