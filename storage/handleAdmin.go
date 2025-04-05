@@ -5,6 +5,8 @@ import (
 )
 
 func (s *Storage) initAdmin() {
+	s.dbLock.Lock()
+	defer s.dbLock.Unlock()
 	_, err := s.db.Exec(`
 			CREATE TABLE IF NOT EXISTS admin_role (
 			guild_id TEXT NOT NULL,
@@ -17,12 +19,16 @@ func (s *Storage) initAdmin() {
 }
 
 func (s *Storage) SetAdminRoleID(guildID string, adminRoleID string) error {
+	s.dbLock.Lock()
+	defer s.dbLock.Unlock()
 	_, err := s.db.Exec(`INSERT INTO admin_role(guild_id, role_id) VALUES($1,$2)
   						 ON CONFLICT(guild_id) DO UPDATE SET role_id=excluded.role_id`, guildID, adminRoleID)
 	return err
 }
 
 func (s *Storage) GetAdminRoleID(guildID string) (string, error) {
+	s.dbLock.Lock()
+	defer s.dbLock.Unlock()
 	adminRoleID := ""
 	err := s.db.Get(&adminRoleID, "SELECT role_id FROM admin_role WHERE guild_id=$1", guildID)
 

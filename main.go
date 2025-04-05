@@ -13,6 +13,10 @@ import (
 	"github.com/Koobson/kotbot/utils/logger"
 )
 
+//TODO bot nie ma traktować usuniętych wiadomości jako aktywności, tzn trzeba zrobić handler na usunięcie wiadomości
+//	   i później z message_timestamps w bazie danych usuwać wiadomości usunięte z serwera discord
+//	   na ten moment jeżeli użytkownik napisze coś i później usunie to bot dalej traktuje to jako aktywność. Tak nie powinno być
+
 func main() {
 	cfg := utils.MustLoadConfig()
 	slog.SetDefault(slog.New(logger.New(slog.LevelInfo, cfg.LogPath)))

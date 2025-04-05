@@ -1,13 +1,16 @@
 package storage
 
 import (
+	"sync"
+
 	"github.com/Koobson/kotbot/utils/logger"
 	"github.com/jmoiron/sqlx"
 	_ "modernc.org/sqlite"
 )
 
 type Storage struct {
-	db *sqlx.DB
+	db     *sqlx.DB
+	dbLock sync.Mutex
 }
 
 func New(dbFilename string) *Storage {

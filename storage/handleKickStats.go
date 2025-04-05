@@ -6,6 +6,8 @@ import (
 )
 
 func (s *Storage) initKickStats() {
+	s.dbLock.Lock()
+	defer s.dbLock.Unlock()
 	_, err := s.db.Exec(`
 			CREATE TABLE IF NOT EXISTS kick_stats (
 			guild_id TEXT NOT NULL,
@@ -19,11 +21,15 @@ func (s *Storage) initKickStats() {
 }
 
 func (s *Storage) AddKickedUser(guildID string, userID string) error {
+	s.dbLock.Lock()
+	defer s.dbLock.Unlock()
 	_, err := s.db.Exec(`INSERT INTO kick_stats(guild_id, user_id, timestamp) VALUES($1,$2,$3)`, guildID, userID, time.Now().Format(time.RFC3339Nano))
 	return err
 }
 
 func (s *Storage) GetKickedUsersCount(guildID string) (int, error) {
+	s.dbLock.Lock()
+	defer s.dbLock.Unlock()
 	var kickedUsersCount int
 	err := s.db.Get(&kickedUsersCount, "SELECT COUNT(*) FROM kick_stats WHERE guild_id=$1", guildID)
 	if err != nil {

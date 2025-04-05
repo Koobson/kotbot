@@ -12,6 +12,8 @@ type activeHumansRow struct {
 }
 
 func (s *Storage) initHuman() {
+	s.dbLock.Lock()
+	defer s.dbLock.Unlock()
 	_, err := s.db.Exec(`
 			CREATE TABLE IF NOT EXISTS message_timestamps (
 			guild_id TEXT NOT NULL,
@@ -35,12 +37,16 @@ func (s *Storage) initHuman() {
 }
 
 func (s *Storage) SetHumanRoleID(guildID string, humanRoleID string) error {
+	s.dbLock.Lock()
+	defer s.dbLock.Unlock()
 	_, err := s.db.Exec(`INSERT INTO human_role(guild_id, role_id) VALUES($1,$2)
   						 ON CONFLICT(guild_id) DO UPDATE SET role_id=excluded.role_id`, guildID, humanRoleID)
 	return err
 }
 
 func (s *Storage) GetHumanRoleID(guildID string) (string, error) {
+	s.dbLock.Lock()
+	defer s.dbLock.Unlock()
 	humanRoleID := ""
 	err := s.db.Get(&humanRoleID, "SELECT role_id FROM human_role WHERE guild_id=$1", guildID)
 
@@ -54,6 +60,8 @@ func (s *Storage) GetHumanRoleID(guildID string) (string, error) {
 }
 
 func (s *Storage) GetActiveHumans(guildID string, cutoffDate time.Time, cutoffMessagesCount int) ([]string, error) {
+	s.dbLock.Lock()
+	defer s.dbLock.Unlock()
 	rows := []activeHumansRow{}
 	err := s.db.Select(&rows, "SELECT * FROM message_timestamps WHERE guild_id=$1", guildID)
 
@@ -83,6 +91,8 @@ func (s *Storage) GetActiveHumans(guildID string, cutoffDate time.Time, cutoffMe
 }
 
 func (s *Storage) AddHumansActivityTimestampRecord(guildID string, userID string) error {
+	s.dbLock.Lock()
+	defer s.dbLock.Unlock()
 	_, err := s.db.Exec("INSERT INTO message_timestamps VALUES ($1, $2, $3)", guildID, userID, time.Now().Format(time.RFC3339Nano))
 	if err != nil {
 		return err
