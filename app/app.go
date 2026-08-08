@@ -32,6 +32,7 @@ func (a *App) registerHandlers() {
 	a.dg.AddHandler(a.handleGuildCreate)
 	a.dg.AddHandler(a.handleMessageCreateActivityRecord)
 	a.dg.AddHandler(a.handleCommands)
+	a.dg.AddHandler(a.handleMeow)
 }
 
 func (a *App) Start() {
