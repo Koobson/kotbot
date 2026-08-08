@@ -10,7 +10,8 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-const humanInactivityTime = time.Hour * 24 * 7
+const humanInactivityTime = time.Hour * 24 * 7 * 2
+const cutoffMessageCount = 4
 
 func (cm *CommandManager) commandInactiveHumans(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	adminRoleID, err := cm.s.GetAdminRoleID(i.GuildID)
@@ -33,7 +34,7 @@ func (cm *CommandManager) commandInactiveHumans(s *discordgo.Session, i *discord
 		return
 	}
 
-	activeHumans, err := cm.s.GetActiveHumans(i.GuildID, time.Now().Add(-humanInactivityTime), 3)
+	activeHumans, err := cm.s.GetActiveHumans(i.GuildID, time.Now().Add(-humanInactivityTime), cutoffMessageCount)
 	if err != nil {
 		cm.InteractionRespond(s, i, utils.ErrorInternal)
 		logger.LogCommand("commandInactiveHumans()->cm.s.GetActiveHumans(i.GuildID, time.Now().Add(-humanInactivityTime), 3)", err, i.GuildID, i.Member.User.ID)
